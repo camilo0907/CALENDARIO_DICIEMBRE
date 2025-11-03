@@ -2,10 +2,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   const calendar = document.getElementById('calendar');
 
   // 🔥 Funciones Firebase (expuestas por index.html)
-  const { guardarCita, cargarCitas, borrarCita } = window;
+  const { guardarCita, borrarCita } = window;
 
-  // 🗂️ Cargar citas desde Firebase
-  let citas = await cargarCitas();
+  // 🗓️ Cargar citas en tiempo real
+  let citas = {};
+
+  // 🔄 Nueva versión con sincronización automática usando onSnapshot
+  window.cargarCitas = (callback) => {
+    const citasRef = collection(db, "citas");
+    onSnapshot(citasRef, (snapshot) => {
+      // Reiniciamos el objeto de citas
+      citas = {};
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (!citas[data.dia]) citas[data.dia] = [];
+        citas[data.dia].push(data.texto);
+      });
+      console.log("⚡ Actualización en tiempo real:", citas);
+      callback(citas);
+    });
+  };
+
+  // 🗂️ Cargar las citas y actualizar el calendario automáticamente
+  cargarCitas((nuevasCitas) => {
+    citas = nuevasCitas;
+    actualizarCalendario();
+  });
 
   // Crear los días de diciembre (31 días)
   for (let i = 1; i <= 31; i++) {
@@ -18,11 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const status = document.createElement('div');
     status.classList.add('status');
-    status.textContent = citas[i]?.length ? 'Con cita' : 'Disponible';
-
-    if (citas[i]) {
-      day.classList.add('con-cita');
-    }
+    status.textContent = 'Disponible';
 
     day.appendChild(number);
     day.appendChild(status);
