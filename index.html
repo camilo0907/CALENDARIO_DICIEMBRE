@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario de Diciembre en Pareja 💖</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📅 Calendario de Citas - Diciembre 💕</h1>
+
+  <div class="contenedor">
+    <img src="foto1.jpg" alt="Foto izquierda" class="foto-lado">
+    <div id="calendar"></div>
+    <img src="foto2.jpg" alt="Foto derecha" class="foto-lado">
+  </div>
+
+  <!-- 🔥 Conexión con Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcmRsYwbn_pGrKwP2BzSOOOGsbb45vmhA",
+      authDomain: "calendario-diciembre.firebaseapp.com",
+      projectId: "calendario-diciembre",
+      storageBucket: "calendario-diciembre.firebasestorage.app",
+      messagingSenderId: "90015107161",
+      appId: "1:90015107161:web:e87946335c67a5dc2ac948"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function guardarCita(dia, texto) {
+      await addDoc(collection(db, "citas"), { dia, texto });
+      console.log("✅ Cita guardada:", dia, texto);
+    }
+
+    async function cargarCitas() {
+      const querySnapshot = await getDocs(collection(db, "citas"));
+      let citas = {};
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (!citas[data.dia]) citas[data.dia] = [];
+        citas[data.dia].push(data.texto);
+      });
+      console.log("📥 Citas cargadas:", citas);
+      return citas;
+    }
+
+    async function borrarCita(dia) {
+      const querySnapshot = await getDocs(collection(db, "citas"));
+      querySnapshot.forEach(async (docSnap) => {
+        const data = docSnap.data();
+        if (data.dia === dia) {
+          await deleteDoc(doc(db, "citas", docSnap.id));
+          console.log("🗑️ Cita eliminada:", dia);
+        }
+      });
+    }
+
+    // ✅ Hacer accesibles las funciones globalmente
+    window.guardarCita = guardarCita;
+    window.cargarCitas = cargarCitas;
+    window.borrarCita = borrarCita;
+  </script>
+
+  <!-- ✅ Script principal debe cargarse DESPUÉS y como módulo -->
+  <script src="script.js"></script>
+
+</body>
+</html>
+

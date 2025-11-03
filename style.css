@@ -1,0 +1,162 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fff0f5;
+  color: #333;
+  text-align: center;
+  padding: 20px;
+}
+
+h1 {
+  color: #d63384;
+}
+
+/* 📅 Contenedor del calendario */
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 80px); /* más compacto */
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+}
+
+/* 📆 Cada día del calendario */
+.day {
+  width: 80px;
+  height: 80px;
+  background-color: #ffe6f0;
+  border: 1px solid #f4a4c4;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.day:hover {
+  background-color: #ffd1e0;
+  transform: scale(1.05);
+}
+
+/* 💖 Día con cita */
+.day.con-cita {
+  background-color: #ff7aa8; /* rosado intenso */
+  color: white;
+  font-weight: bold;
+  transform: scale(1.05);
+}
+
+/* 🔢 Número del día */
+.day span {
+  display: block;
+  font-weight: bold;
+  font-size: 16px;
+  color: #c2185b;
+}
+
+/* 📍 Estado (Disponible / Con cita) */
+.status {
+  font-size: 12px;
+  margin-top: 5px;
+  color: #b30c55;
+}
+
+/* 🪄 Modal */
+#modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+#lista-citas {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
+}
+
+#lista-citas li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f2f2f2;
+  margin: 5px 0;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+#lista-citas .btn-eliminar {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#lista-citas .btn-eliminar:hover {
+  color: red;
+}
+
+#nuevaCita {
+  width: 90%;
+  margin: 10px 0;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #d63384;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #b3256b;
+}
+
+/* 💕 Contenedor general (fotos + calendario) */
+.contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* centra verticalmente con el calendario */
+  gap: 50px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+/* 📸 Fotos laterales */
+.foto-lado {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid #f8a1c4;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.foto-lado:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 25px rgba(255, 105, 180, 0.6);
+}
